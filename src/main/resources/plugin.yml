@@ -1,0 +1,34 @@
+name: BedWars1058-Rush
+version: '${version}'
+main: dev.etran.bedwarsrush.BedWarsRushPlugin
+# 1.13 keeps modern servers from enabling their legacy-material compatibility layer; 1.8 - 1.12 servers ignore it.
+api-version: '1.13'
+author: dev.etran
+authors: [dev.etran]
+description: The Rush game mode for BedWars1058 - fortified beds, maxed generators and fast bridging, fully configurable.
+depend: [BedWars1058]
+softdepend: [PlaceholderAPI]
+
+commands:
+  bwrush:
+    description: Manage the BedWars1058 Rush game mode
+    usage: /<command> help
+    aliases: [rushmode, bw-rush]
+
+permissions:
+  bwrush.*:
+    description: Everything BedWars1058-Rush offers
+    default: op
+    children:
+      bwrush.reload: true
+      bwrush.manage: true
+      bwrush.info: true
+  bwrush.reload:
+    description: Reload the configuration in game
+    default: op
+  bwrush.manage:
+    description: Add or remove Rush arena groups, whitelist and blacklist entries
+    default: op
+  bwrush.info:
+    description: See which arenas run Rush and why
+    default: op

@@ -1,0 +1,259 @@
+# ======================================================================================================================
+#  BedWars1058-Rush by dev.etran
+#
+#  Reload this file in game with  /bwrush reload  - no restart needed.
+#  A typo never breaks a running server: if the file is invalid the previous settings stay active and the command
+#  tells you what is wrong. Mistakes in single values are reported as warnings and replaced by a safe default.
+#
+#  Layout
+#    settings   plugin behaviour
+#    arenas     WHICH arenas play Rush (groups / whitelist / blacklist)
+#    game       starting upgrades, permanent potion effects, tutorial
+#    bed-defense  the layers built around every bed
+#    bridge     left-click bridge mode
+#    generators tune BedWars1058's generators and add your own (what spawns, how fast, how many)
+#    overrides  different values for a specific group or arena
+# ======================================================================================================================
+
+settings:
+  # Print extra information to the console (which arenas start Rush, how many blocks were placed, ...).
+  debug: false
+  # When you reload while games are running, re-apply generator settings to those games right away.
+  # (Blocks already placed and effects already given are never touched.)
+  apply-to-running-arenas-on-reload: true
+  # Add this plugin's in-game texts (tutorial, bridge mode on/off) to every BedWars1058 language file.
+  # Existing texts are never overwritten, so you can translate / re-word them in BedWars1058's lang folder.
+  inject-language-messages: true
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  Which arenas play Rush
+#
+#  An arena plays Rush when it is NOT blacklisted AND (it is whitelisted OR its group is listed under "groups").
+#  Order of checks: blacklist -> whitelist -> whitelist-only -> groups.
+#
+#  Every entry is case-insensitive and supports wildcards:  *  = any text,  ?  = one character.
+#  Arena groups are created with  /bw arenaGroup create <name>  and assigned with  /bw arenaGroup set <arena> <group>.
+#
+#  You can also manage these lists in game with  /bwrush group|whitelist|blacklist add|remove <name>.
+#  Those entries are stored in arena-lists.yml and combined with the lists below.
+# ----------------------------------------------------------------------------------------------------------------------
+arenas:
+  # Every arena in one of these groups plays Rush.
+  groups:
+    - rush_solo
+  # These arenas play Rush no matter which group they are in.
+  whitelist: []
+  #  - Gardens
+  #  - "rush_*"
+  # These arenas NEVER play Rush, even if their group (or the whitelist) says so. Blacklist always wins.
+  blacklist: []
+  #  - Aquarium
+  # If true, ONLY whitelisted arenas play Rush and "groups" is ignored. Handy for trying Rush on a single map.
+  whitelist-only: false
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  Game start
+# ----------------------------------------------------------------------------------------------------------------------
+game:
+  # Wait this long after the game starts before applying the settings below (20 ticks = 1 second).
+  # BedWars1058 needs a moment to finish setting up teams.
+  start-delay-ticks: 5
+  # Jump the event timeline to this BedWars1058 event. NONE keeps the normal schedule.
+  # Valid: DIAMOND_GENERATOR_TIER_II, DIAMOND_GENERATOR_TIER_III, EMERALD_GENERATOR_TIER_II,
+  #        EMERALD_GENERATOR_TIER_III, BEDS_DESTROY, ENDER_DRAGON, GAME_END, NONE
+  next-event: BEDS_DESTROY
+  # Send the "Bed Wars Rush" explanation to every player when the game starts.
+  tutorial: true
+  # BedWars1058 team upgrades every team starts with: upgrade key -> tier index (0 = first tier).
+  # Remove a line to not grant it. Keys are the ones from BedWars1058's shop/upgrades config.
+  team-upgrades:
+    upgrade-forge: 3
+    upgrade-miner: 0
+    upgrade-heal-pool: 0
+  # Potion effects every team member has all game. Key = effect name (old or new names both work, e.g.
+  # FAST_DIGGING or HASTE). duration is "infinite" or a number of seconds.
+  team-effects:
+    SPEED:
+      amplifier: 0          # 0 = level I
+      duration: infinite
+    FAST_DIGGING:
+      amplifier: 0
+      duration: infinite
+  # Effects players only get while standing on their own island (the "heal pool" style area).
+  base-effects:
+    REGENERATION:
+      amplifier: 0
+      duration: infinite
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  Bed defense
+#
+#  Builds concentric shells around each bed, innermost first. Every layer fully surrounds the one inside it,
+#  so there are no gaps.
+# ----------------------------------------------------------------------------------------------------------------------
+bed-defense:
+  enabled: true
+  # Build this many ticks after the game starts (0 = immediately).
+  delay-ticks: 0
+  # Layers, innermost first. Each entry is a block name, or {material, thickness}.
+  #   Team-coloured shortcuts:  WOOL  GLASS  GLASS_PANE  TERRACOTTA  CONCRETE  CARPET
+  #   Plain shortcuts:          WOOD (oak planks)
+  #   Anything else:            a normal block name such as END_STONE, OBSIDIAN, SANDSTONE
+  # Names that don't exist on your Minecraft version are reported at reload and skipped.
+  layers:
+    - WOOD
+    - WOOL
+    - GLASS
+  #  - material: END_STONE
+  #    thickness: 2
+  # Shape of the layers:
+  #   DIAMOND  a gem. Each layer is every block exactly N straight steps from the bed (no diagonal steps), so the
+  #            defense tapers up and out like the top half of a diamond.
+  #   BOX      hollow boxes, corners included.
+  shape: DIAMOND
+  # What a layer may replace:  AIR | AIR_AND_LIQUID | ANY_EXCEPT_BED
+  replace: AIR
+  # Also wrap the area below the bed (normally the island is already there).
+  include-below: false
+  # Leave out blocks that BedWars1058 protects (spawn / generator areas).
+  skip-protected: false
+  # Safety limit per bed.
+  max-blocks-per-team: 3000
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  Bridge mode
+#
+#  Hold a bridge block and left click to switch bridge mode on/off. While it is on, every block you place is
+#  extended automatically in the direction you are building.
+# ----------------------------------------------------------------------------------------------------------------------
+bridge:
+  enabled: true
+  # LEFT_CLICK = toggle with left click; ALWAYS = bridging is always active, no toggle.
+  toggle: LEFT_CLICK
+  # How many blocks are added automatically after the one you placed.
+  extra-blocks: 5
+  # Ticks between the automatically placed blocks (lower = faster).
+  interval-ticks: 3
+  # Which blocks bridge. Wildcards allowed over block names: *WOOL matches WOOL and RED_WOOL, *GLASS, END_STONE, ...
+  materials:
+    - "*WOOL"
+  # true = every extra block costs one item from the stack in your hand's type; false = free.
+  consume-items: false
+  # AUTO picks the right sound for the block on every Minecraft version. NONE = silent.
+  # You can also give a sound name, e.g. block.stone.place (names differ between versions!).
+  sound: AUTO
+  volume: 1.0
+  pitch: 1.0
+  messages:
+    action-bar: true
+    chat: false
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  Generators
+#
+#  Two tools:
+#   1. team / global  - change BedWars1058's own generators. Every value is optional; leave it out to keep what
+#                       BedWars1058 uses. Delay is in whole seconds (a BedWars1058 limit).
+#   2. extra          - generators made by this plugin: any item, any amount, any speed (sub-second delays work),
+#                       placed at team islands or at the map's diamond/emerald generators.
+# ----------------------------------------------------------------------------------------------------------------------
+generators:
+  # BedWars1058 raises generator tiers on its own timeline, which would reset your numbers. This re-applies the values
+  # set below every N seconds so yours win. 0 = apply only once at the start.
+  enforce-interval-seconds: 5
+  # tier-ups (global generators only) are applied this long after the game starts, once BedWars1058 has built them.
+  tier-up-delay-ticks: 100
+
+  # ---- BedWars1058's team generators (the ones on each island) --------------------------------------------------
+  # Available keys for each:
+  #   delay:       seconds between drops
+  #   amount:      items per drop
+  #   spawn-limit: stop spawning when this many are lying around
+  #   material:    what it drops (item name, e.g. IRON_INGOT, GOLD_INGOT, EMERALD)
+  team:
+    iron: {}
+    gold: {}
+    emerald: {}
+    # Example - double-speed iron, gold that also drops 2 at a time:
+    #  iron:
+    #    delay: 1
+    #    amount: 2
+    #    spawn-limit: 64
+    #  gold:
+    #    delay: 4
+    #    amount: 2
+
+  # ---- BedWars1058's map generators (diamond / emerald in the middle) ---------------------------------------------
+  # tier-ups: how many tiers to jump at game start (2 = straight to tier III). Same keys as above are allowed too.
+  global:
+    diamond:
+      tier-ups: 2
+    emerald:
+      tier-ups: 2
+
+  # ---- Extra generators made by this plugin -----------------------------------------------------------------------
+  # Each entry needs a location and one or more drops. The name of the entry (team-emerald) is only a label.
+  #
+  #   location: where it is placed
+  #       TEAM_IRON, TEAM_GOLD, TEAM_EMERALD  the arena's configured generator spots of each team
+  #       TEAM_SPAWN, TEAM_BED                the team's spawn point / its bed
+  #       ARENA_DIAMOND, ARENA_EMERALD        the map's diamond / emerald generators
+  #   drops: what spawns. Each drop has its own timing:
+  #       material, amount, delay (seconds, decimals allowed, minimum 0.1), spawn-limit (0 = unlimited),
+  #       name (custom item name), pickup-delay-ticks
+  #   teams: only these teams (wildcards; empty = all). Ignored for ARENA_* locations.
+  #   offset: x/y/z shift from the spot.   start-delay-seconds: wait before the first drop.
+  #   stop-when-eliminated: stop a team's generator once its bed is gone and nobody is left.
+  #   enabled: false turns an entry (or a single drop) off without deleting it.
+  extra:
+    team-emerald:
+      enabled: true
+      location: TEAM_EMERALD
+      stop-when-eliminated: true
+      drops:
+        emerald:
+          material: EMERALD
+          amount: 1
+          delay: 15
+          spawn-limit: 8
+    # Example - a rapid gold + iron trickle at every team's bed:
+    #  bed-trickle:
+    #    enabled: true
+    #    location: TEAM_BED
+    #    teams: ["red", "blue"]
+    #    drops:
+    #      iron:
+    #        material: IRON_INGOT
+    #        delay: 0.5
+    #        spawn-limit: 32
+    #      gold:
+    #        material: GOLD_INGOT
+    #        delay: 2.5
+    #        spawn-limit: 16
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  Overrides
+#
+#  Everything above (game, bed-defense, bridge, generators) can be changed for one group or arena. Only write the
+#  values that differ - the rest is inherited. Keys are wildcard patterns. The most specific block wins:
+#  arena (exact name > wildcard) > group > the values above.
+#
+#  Lists (like bed-defense.layers or bridge.materials) are replaced as a whole, not merged.
+# ----------------------------------------------------------------------------------------------------------------------
+overrides:
+  groups: {}
+  #  rush_doubles:
+  #    bed-defense:
+  #      layers: [WOOD, WOOL]
+  #    generators:
+  #      team:
+  #        iron:
+  #          delay: 1
+  arenas: {}
+  #  Gardens:
+  #    bridge:
+  #      enabled: false
+  #    generators:
+  #      extra:
+  #        team-emerald:
+  #          enabled: false

@@ -1,0 +1,66 @@
+# Texts shown to admins by /bwrush. Colour codes use &. Placeholders look like %name%.
+# (The in-game tutorial and bridge-mode texts live in BedWars1058's own language files instead, so every player
+#  sees them in their own language - see settings.inject-language-messages in config.yml.)
+
+prefix: "&8[&6BedWars1058-Rush&8] &r"
+
+no-permission: "&cYou don't have permission to do that."
+unknown-subcommand: "&cUnknown subcommand. Try &f/%label% help&c."
+no-arenas: "&7There are no BedWars1058 arenas loaded."
+arena-not-found: "&cNo arena called &f%arena%&c."
+
+word-rush: "&aRUSH"
+word-normal: "&7normal BedWars"
+word-on: "&aon"
+word-off: "&coff"
+word-none: "&7none"
+
+help-header: "&6&lBedWars1058-Rush &7v%version% &8- &7by dev.etran"
+help-reload: "&e/%label% reload &7- reload config, messages and lists"
+help-status: "&e/%label% status &7- summary of what is configured"
+help-list: "&e/%label% list &7- every arena and whether it plays Rush"
+help-check: "&e/%label% check <arena> &7- why an arena is (not) Rush"
+help-group: "&e/%label% group <add|remove|list> [group] &7- Rush arena groups"
+help-whitelist: "&e/%label% whitelist <add|remove|list> [arena] &7- arenas that always play Rush"
+help-blacklist: "&e/%label% blacklist <add|remove|list> [arena] &7- arenas that never play Rush"
+
+reload-success: "&aReloaded in &f%ms%ms&a. &f%rush%&a of &f%total%&a arenas play Rush; refreshed &f%refreshed%&a running game(s)."
+reload-failed: "&cReload failed. Nothing was changed:"
+reload-error-line: "&c  - %message%"
+reload-kept-old: "&7The previous configuration is still active. Fix config.yml and run the command again."
+reload-warning-line: "&e  ! %message%"
+
+status-header: "&6&lRush status"
+status-arenas: "&7Arenas: &f%rush%&7 of &f%total%&7 play Rush, &f%running%&7 game(s) running right now."
+status-list: "&7%kind%: &f%values%"
+status-whitelist-only: "&7whitelist-only: &f%value%"
+status-overrides: "&7Per-group / per-arena override blocks: &f%count%"
+
+list-header: "&6&lArenas &7(%count%)"
+list-line-rush: "&a  RUSH &f%arena% &7[%group%] %state% &8- &7%reason%"
+list-line-normal: "&8  ---- &7%arena% &8[%group%] %state% - %reason%"
+
+check-header: "&6&lRush check: &f%arena%"
+check-result: "&7Mode: %result% &8- &7%reason%"
+check-group: "&7Group: &f%group%"
+check-bed: "&7Bed defense: %state% &8- &7layers: &f%layers%"
+check-bridge: "&7Bridge: %state% &8- &7mode &f%mode%&7, &f%blocks%&7 extra blocks"
+check-generators: "&7Tuned generators: &f%tuned% &8| &7extra generators: &f%extra%"
+
+reason-blacklisted: "&7blacklisted (&f%match%&7)"
+reason-whitelisted: "&7whitelisted (&f%match%&7)"
+reason-group: "&7group matches &f%match%"
+reason-not-whitelisted: "&7whitelist-only is on and the arena is not whitelisted"
+reason-no-match: "&7no group, whitelist or blacklist entry applies"
+
+usage-check: "&cUsage: &f/%label% check <arena>"
+usage-edit: "&cUsage: &f/%label% %kind% <add|remove|list> <name>"
+list-edit-file: "&7%kind% (config.yml): &f%values%"
+list-edit-commands: "&7%kind% (added with commands): &f%values%"
+added: "&aAdded &f%value%&a to the Rush %kind% list."
+removed: "&aRemoved &f%value%&a from the Rush %kind% list."
+already-listed: "&e%value% is already on the %kind% list."
+not-listed: "&e%value% is not on the %kind% list."
+defined-in-config: "&e%value% is set in config.yml, not by command. Remove it there and run &f/bwrush reload&e."
+matches-nothing: "&7(No arena or group currently matches &f%value%&7 - saved anyway.)"
+save-failed: "&cCould not save: %message%"
