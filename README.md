@@ -18,7 +18,7 @@ then use `/bwrush reload`. Put your arenas in the group `rush_solo` (default) wi
 |---|---|
 | `arenas` | Which arenas play Rush: **groups**, **whitelist**, **blacklist** (wildcards `*` `?`, blacklist always wins), `whitelist-only` |
 | `game` | Jump-to event, starting team upgrades, permanent team/base potion effects, tutorial |
-| `bed-defense` | Any number of concentric layers, each a block or team-coloured block, thickness, replace policy |
+| `bed-defense` | Any number of concentric layers, each a block or team-coloured block, thickness, replace policy; **gem or box** shape |
 | `bridge` | Toggle mode, length, speed, which blocks, item cost, sound, messages |
 | `generators.team` / `.global` | Tune BedWars1058's own iron/gold/emerald/diamond: delay, amount, spawn limit, what drops, tier-ups |
 | `generators.extra` | Your own generators: any item, amount, **sub-second delay**, spawn limit, at team spots, beds, spawns or map generators |

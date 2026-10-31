@@ -40,7 +40,7 @@ object BedDefense {
             val spec = Materials.block(layer.material, colorName)
             repeat(layer.thickness) {
                 if (spec != null && placed < settings.maxBlocksPerTeam) {
-                    for (pos in BedShell.layer(corePositions, distance, settings.includeBelow)) {
+                    for (pos in BedShell.layer(corePositions, distance, settings.includeBelow, settings.shape)) {
                         if (pos.y > maxY || pos.y < 0) continue
                         val block = world.getBlockAt(pos.x, pos.y, pos.z)
                         if (!canReplace(block.type, settings.replace)) continue

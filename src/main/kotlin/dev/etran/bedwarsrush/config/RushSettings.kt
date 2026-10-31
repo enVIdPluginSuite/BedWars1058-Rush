@@ -34,6 +34,14 @@ enum class ReplaceMode {
     ANY_EXCEPT_BED,
 }
 
+enum class BedShape {
+    /** Gem: a layer is every block exactly N straight steps (no diagonal steps) from the bed. Half an octahedron. */
+    DIAMOND,
+
+    /** Box: a layer is the hollow cuboid N blocks out, corners included. */
+    BOX,
+}
+
 /** One concentric shell (or several, if [thickness] > 1). [material] is a block name or a team-coloured token. */
 data class LayerSpec(val material: String, val thickness: Int)
 
@@ -41,6 +49,7 @@ data class BedDefenseSettings(
     val enabled: Boolean,
     val delayTicks: Int,
     val layers: List<LayerSpec>,
+    val shape: BedShape,
     val replace: ReplaceMode,
     val includeBelow: Boolean,
     val skipProtected: Boolean,
