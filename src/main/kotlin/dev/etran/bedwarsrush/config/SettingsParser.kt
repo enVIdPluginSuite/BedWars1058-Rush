@@ -90,7 +90,6 @@ class SettingsParser(private val warn: (String) -> Unit) {
             enabled = v.bool("enabled", true),
             delayTicks = v.int("delay-ticks", 0).coerceAtLeast(0),
             layers = layers,
-            shape = enumOf(v.string("shape", "DIAMOND"), BedShape.values(), BedShape.DIAMOND, "bed-defense.shape"),
             replace = replace,
             includeBelow = v.bool("include-below", false),
             skipProtected = v.bool("skip-protected", false),

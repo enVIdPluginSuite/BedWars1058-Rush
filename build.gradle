@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+}
+
+group = 'dev.etran'
+version = '2.1.0'
+
+repositories {
+    mavenCentral()
+
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+
+    maven {
+        url = 'https://repo.codemc.io/repository/maven-public/'
+    }
+}
+
+dependencies {
+
+    // Compiled against the OLDEST supported API (Spigot 1.8.8) so that nothing newer can be referenced by
+    // accident. Anything that only exists on newer versions is reached through dev.etran.luckyblock.compat.
+    compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
+
+    // BedWars1058 API
+    // (transitive = false: its POM drags in an old full Spigot server jar and sidebar libs we don't need)
+    compileOnly('com.andrei1058.bedwars:bedwars-api:23.12.1-SNAPSHOT') {
+        transitive = false
+    }
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+}
+
+// Minecraft 1.8 servers run on Java 8, so target Java 8 bytecode (it also runs on the Java 17/21 that
+// newer servers use). "release" lets any JDK 9+ compile this and checks that only Java 8 APIs are used.
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.release = 8
+}
+
+// plugin.yml gets the project version
+processResources {
+    filesMatching('plugin.yml') {
+        expand(version: project.version)
+    }
+}
+
+jar {
+    archiveFileName = "BedWars1058-LuckyBlock-${project.version}.jar"
+}

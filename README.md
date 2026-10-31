@@ -41,6 +41,11 @@ Minecraft version). A broken `config.yml` never takes effect: the old settings s
 The BedWars1058 API is resolved from `https://repo.andrei1058.dev/releases/` (`bedwarsApiVersion` in `gradle.properties`).
 To use a local jar instead: drop it in `libs/` or pass `-PbedwarsApiJar=...`.
 
+## Releasing
+1. Bump `pluginVersion` in `gradle.properties` and add an entry to `CHANGELOG.md`.
+2. Commit, then tag and push: `git tag -a vX.Y.Z -m "vX.Y.Z" && git push --follow-tags`.
+3. The *Release* workflow builds the jar and publishes it on the GitHub Releases page.
+
 ## How 1.8 → 26.3 works from one jar
 The plugin is compiled against the **1.8.8** API so nothing newer can slip in. Everything that differs between versions is
 handled in `compat/`: block names are looked up by name (`WOOL:14` vs `RED_WOOL`), sounds are played by resource name instead

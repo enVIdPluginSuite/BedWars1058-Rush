@@ -2,9 +2,3 @@
 build/
 .idea/
 *.iml
-out/
-.kotlin/
-# third-party jars you drop into ./libs for local builds
-libs/*.jar
-gradlew
-gradlew.bat
