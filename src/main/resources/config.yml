@@ -165,23 +165,22 @@ generators:
   tier-up-delay-ticks: 100
 
   # ---- BedWars1058's team generators (the ones on each island) --------------------------------------------------
-  # Available keys for each:
-  #   delay:       seconds between drops
+  # Rush starts maxed, so these default to much faster than a normal game. Every key is optional; delete a key (or the
+  # whole entry, leaving `{}`) to keep BedWars1058's own value for it.
+  #   delay:       seconds between drops (whole seconds - a BedWars1058 limit; for faster use generators.extra below)
   #   amount:      items per drop
   #   spawn-limit: stop spawning when this many are lying around
   #   material:    what it drops (item name, e.g. IRON_INGOT, GOLD_INGOT, EMERALD)
   team:
-    iron: {}
-    gold: {}
+    iron:
+      delay: 1
+      amount: 2
+      spawn-limit: 96
+    gold:
+      delay: 3
+      amount: 2
+      spawn-limit: 48
     emerald: {}
-    # Example - double-speed iron, gold that also drops 2 at a time:
-    #  iron:
-    #    delay: 1
-    #    amount: 2
-    #    spawn-limit: 64
-    #  gold:
-    #    delay: 4
-    #    amount: 2
 
   # ---- BedWars1058's map generators (diamond / emerald in the middle) ---------------------------------------------
   # tier-ups: how many tiers to jump at game start (2 = straight to tier III). Same keys as above are allowed too.
