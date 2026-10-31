@@ -2,3 +2,5 @@
 build/
 .idea/
 *.iml
+gradlew
+gradlew.bat
